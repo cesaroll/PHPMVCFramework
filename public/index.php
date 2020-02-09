@@ -1,3 +1,7 @@
 <?php
 
-echo 'Hello from the public folder!';
+/*
+ * Front Controller
+ */
+
+echo 'Requested URL = "' . $_SERVER['QUERY_STRING'] . '"';
