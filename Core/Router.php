@@ -24,10 +24,20 @@ class Router
    * Add a route to the routing table
    *
    * @param string $route The route URL
-   * @param array $parms Parameters (Controller, Action, etc)
+   * @param array  $params
    */
-  public function add($route, $parms){
-    $this->routes[$route] = $parms;
+  public function add($route, $params = []){
+    // Convert the route to a regular expression: escape forward slashes
+    $route = preg_replace('/\//', '\\/', $route); // Replaces: "/" with: "\/"
+
+    // Convert variables e.g. {controller}
+    $route = preg_replace('/\{([a-z-]+)\}/', '(?P<\1>[a-z-]+)', $route);
+
+    //Add start and end delimiters, amd case insensitive flag
+    $route = '/^' . $route . '$/i';
+
+    $this->routes[$route] = $params;
+
   }
 
   /**
@@ -49,28 +59,21 @@ class Router
    */
   public function match($url): bool {
 
-    /*foreach($this->routes as $route => $params){
-      if($url == $route){
+    foreach($this->routes as $route => $params){
+
+      if(preg_match($route, $url, $matches)){
+        // Get named capture group values
+
+        foreach($matches as $key => $match){
+          if(is_string($key)){
+            $params[$key] = $match;
+          }
+        }
+
         $this->params = $params;
         return true;
+
       }
-    }*/
-
-    // Match to the fixed URl format /controller/action
-    $regExp = "/^(?P<Controller>[a-zA-Z0-9-]+)\/(?P<Action>[a-zA-Z0-9-]+)$/";
-
-    if(preg_match($regExp, $url, $matches)){
-      // get named capture group values
-      $params = [];
-
-      foreach($matches as $key => $match){
-        if(is_string($key)){
-          $params[$key] = $match;
-        }
-      }
-
-      $this->params = $params;
-      return true;
 
     }
 
