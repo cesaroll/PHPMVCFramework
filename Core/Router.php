@@ -93,4 +93,55 @@ class Router
     return $this->params;
   }
 
+  /**
+   * @param $url
+   */
+  public function dispatch($url){
+
+    if($this->match($url)){
+      $controller = $this->params['controller'];
+      $controller = $this->convertToStudlyCaps($controller);
+
+      if(class_exists($controller)){
+        $controllerObject = new $controller();
+
+        $action = $this->params['action'];
+        $action = $this->convertToCamelCase($action);
+
+        if(is_callable([$controllerObject,$action])) {
+          $controllerObject->$action();
+        } else {
+          echo "Method $action (in Controller $controller) not found ";
+        }
+
+      } else {
+        echo "Controller class $controller not found";
+      }
+
+    } else {
+      echo 'No route matched';
+    }
+
+  }
+
+  /**
+   * Convert the string with hyphens to StudlyCaps
+   * @param $string
+   *
+   * @return string|string[]
+   */
+  private function convertToStudlyCaps($string) {
+    return str_replace(' ','',ucwords(str_replace('-',' ',$string)));
+  }
+
+  /**
+   * Convert string with hyphens to CamlCase
+   * @param $string
+   *
+   * @return string
+   */
+  private function convertToCamelCase($string) {
+    return lcfirst($this->convertToStudlyCaps($string));
+  }
+
 }
