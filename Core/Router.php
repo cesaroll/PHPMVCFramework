@@ -99,6 +99,8 @@ class Router
    */
   public function dispatch($url){
 
+    $url = $this->removeQueryStringVariables($url);
+
     if($this->match($url)){
       $controller = $this->params['controller'];
       $controller = $this->convertToStudlyCaps($controller);
@@ -144,6 +146,27 @@ class Router
    */
   private function convertToCamelCase($string) {
     return lcfirst($this->convertToStudlyCaps($string));
+  }
+
+  /**
+   * Remove the query string variables from the URL if any.
+   *
+   * @param $url
+   */
+  private function removeQueryStringVariables($url) {
+
+    if($url != '') {
+      $parts = explode('&',$url,2);
+
+      if(strpos($parts[0],'=') === false){
+        $url = $parts[0];
+      } else {
+        $url = '';
+      }
+    }
+
+    return $url;
+
   }
 
 }
