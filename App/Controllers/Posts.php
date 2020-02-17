@@ -5,7 +5,7 @@ namespace App\Controllers;
 /**
  * Class Posts
  */
-class Posts{
+class Posts extends \Core\Controller {
 
   /**
    * Show the index page
@@ -21,6 +21,12 @@ class Posts{
    */
   public function addNew(){
     echo 'Hello from the addNew action in the Posts controller';
+  }
+
+  public function edit() {
+    echo 'Hello from the edit action in the Posts controller';
+    echo '<p>Route parameters: <pre>' .
+         htmlspecialchars(print_r($this->routeParams, true)) . '</pre></p>';
   }
 
 }
