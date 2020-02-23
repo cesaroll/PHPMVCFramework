@@ -11,7 +11,9 @@ class View {
    *
    * @param $view
    */
-  public static function render($view): void {
+  public static function render($view, $args = []): void {
+
+      extract($args, EXTR_SKIP);
 
       $file = "../App/Views/$view";
 
