@@ -1,16 +1,9 @@
 <?php
 
 /**
- * Front Controller
+ * Twig
  */
-
-//require '../App/Controllers/Posts.php';
-
-/**
- * Routing
- */
-//require '../Core/Router.php';
-
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 /**
  * Autoloader
