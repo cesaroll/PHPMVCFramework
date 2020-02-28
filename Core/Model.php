@@ -4,6 +4,7 @@
 namespace Core;
 
 use PDO;
+use App\Config;
 
 abstract class Model {
 
@@ -18,7 +19,8 @@ abstract class Model {
       $password = "mvcpassword";
 
       try {
-        $this->db = new PDO("mysql:host=$host;dbname=$dbName;charset=utf8", $username, $password);
+        $this->db = new PDO('mysql:host=' . Config::DB_HOST . ';dbname=' . Config::DB_NAME . ';charset=utf8',
+                            Config::DB_USER, Config::DB_PASSWORD);
       }
       catch(\PDOException $e) {
         echo $e->getMessage();
