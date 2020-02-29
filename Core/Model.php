@@ -8,26 +8,19 @@ use App\Config;
 
 abstract class Model {
 
-  private $db;
-
   protected function getDB() {
 
-    if($this->db === null) {
-      $host = "localhost";
-      $dbName = "mvc";
-      $username = "mvcuser";
-      $password = "mvcpassword";
+    static $db = null;
 
-      try {
-        $this->db = new PDO('mysql:host=' . Config::DB_HOST . ';dbname=' . Config::DB_NAME . ';charset=utf8',
-                            Config::DB_USER, Config::DB_PASSWORD);
-      }
-      catch(\PDOException $e) {
-        echo $e->getMessage();
-      }
+    if($db === null) {
+      $dsn = 'mysql:host=' . Config::DB_HOST . ';dbname=' . Config::DB_NAME . ';charset=utf8';
+      $db = new PDO($dsn,Config::DB_USER, Config::DB_PASSWORD);
+
+      $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
     }
 
-    return $this->db;
+    return $db;
 
   }
 

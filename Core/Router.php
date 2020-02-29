@@ -96,6 +96,8 @@ class Router
 
   /**
    * @param $url
+   *
+   * @throws \Exception
    */
   public function dispatch($url){
 
@@ -104,7 +106,6 @@ class Router
     if($this->match($url)){
       $controller = $this->params['controller'];
       $controller = $this->convertToStudlyCaps($controller);
-      //$controller = "App\Controllers\\$controller";
       $controller = $this->getNamespace() . $controller;
 
       if(class_exists($controller)){
@@ -120,11 +121,11 @@ class Router
         }
 
       } else {
-        echo "Controller class $controller not found";
+        throw new \Exception("Controller class $controller not found");
       }
 
     } else {
-      echo 'No route matched';
+      throw new \Exception('No route matched');
     }
 
   }
