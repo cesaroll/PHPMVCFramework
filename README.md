@@ -6,6 +6,8 @@ This is a simple project to learn php.
 
 ## Purpose
 
+As stated above this is a simple php tutorial.
+
 ## Deployment
 
 
